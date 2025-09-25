@@ -1,3 +1,7 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
 # УРАВНЕНИЕ ЛАПЛАСА
 
 # МЕТОД КВАДРАТОВ
@@ -23,10 +27,10 @@ def fill_matr(li):
                 elif(y == SIZE and x != SIZE) or (x == SIZE and y != SIZE) or (y == SIZE and x == SIZE):
                     li[y][x] = 1
 
+# ВЫВОД ТЕПЛОВОЙ КАРТЫ МАТРИЦЕЙ
 def display_matr(li):
      matr = li.copy()
      matr.reverse()
-
      for line in matr:
         #   print(line)
           text = ""
@@ -34,14 +38,17 @@ def display_matr(li):
                text += str(i) + "\t"
           print(text)
 
+# ТЕПЛОВАЯ КАРТА
+def sns_heatmap(li):
+     heat_map = li.copy()
+     heat_map.reverse()
+     sns.heatmap(heat_map, annot=False, cmap="YlGnBu")
+     plt.title("Laplacian Heatmap")
+     plt.show()
+
 
 # TEMP = 1/4*(LEFT+RIGHT+UP+DOWN)
 def heat(li):
-    #  LEFT = 0
-    #  RIGHT = SIZE
-    #  UP = SIZE
-    #  DOWN = 0
-
      prev_heat_map = li.copy() # НА ЭТОЙ КАРТЕ БЕРУТ ЗНАЧЕНИЯ
      heat_map = li.copy() # НА ЭТОЙ КАРТЕ ВСТАВЛЯЮТ РЕЗУЛЬТАТ
      for iter in range(0, ITERATIONS+1):
@@ -50,48 +57,12 @@ def heat(li):
                   
                   if( (x > 0 and x < SIZE) and (y > 0 and y < SIZE)):
                        heat_map[y][x] = round(1/4*(prev_heat_map[y-1][x] + prev_heat_map[y+1][x] + prev_heat_map[y][x-1] + prev_heat_map[y][x+1]), 3)
-                 
-                #  if(x == 0 and y == 0): #ЛЕВЫЙ-НИЖНИЙ УГОЛ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y][x+1] + prev_heat_map[y+1][x])
-
-
-                #  elif(y == 0 and (x != 0 and x != SIZE)): #НИЗ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y][x-1] + prev_heat_map[y+1][x] + prev_heat_map[y][x+1])
-
-
-                #  elif(x == SIZE and y == 0): #ПРАВЫЙ-НИЖНИЙ УГОЛ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y][x-1] + prev_heat_map[y+1][x])
-                    
-
-                #  elif(x == 0 and (y != 0 and y != SIZE)): #ЛЕВО
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y-1][x] + prev_heat_map[y][x+1] + prev_heat_map[y+1][x])
-                 
-
-                #  elif(x == SIZE and (y != 0 and y != SIZE)): #ПРАВО
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y][x-1] + prev_heat_map[y+1][x] + prev_heat_map[y-1][x])
-                
-
-                #  elif(y == SIZE and x == 0): #ЛЕВЫЙ-ВЕРХНИЙ УГОЛ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y-1][x] + prev_heat_map[y][x+1])
-                
-                
-                #  elif(x == SIZE and y == SIZE): #ПРАВЫЙ-ВЕРХНИЙ УГОЛ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y][x-1] + prev_heat_map[y-1][x])
-                
-
-                #  elif(y == SIZE and (x != 0 and x != SIZE)): #ВЕРХ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y-1][x] + prev_heat_map[y][x+1] + prev_heat_map[y][x-1])
-                
-
-                #  else: #ВНУТРИ
-                #       heat_map[y][x] = 1/4*(prev_heat_map[y-1][x] + prev_heat_map[y+1][x] + prev_heat_map[y][x-1] + prev_heat_map[y][x-1])
 
      return heat_map.copy()
           
 
 li = square_matr(SIZE)
 fill_matr(li)
-
 li = heat(li)
+sns_heatmap(li)
 
-display_matr(li)
