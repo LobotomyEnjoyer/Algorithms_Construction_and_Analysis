@@ -1,8 +1,8 @@
 # УРАВНЕНИЕ ЛАПЛАСА
 
 # МЕТОД КВАДРАТОВ
-SIZE = 5
-ITERATIONS = 100
+SIZE = int(input("Размер определяется как квадратная матрица.\nВведите размер тепловой карты (целое число): ")) # размер квадратного поля
+ITERATIONS = int(input("Введите количество итераций (целое число): "))
 
 def square_matr(size):
         li = []
@@ -37,10 +37,10 @@ def display_matr(li):
 
 # TEMP = 1/4*(LEFT+RIGHT+UP+DOWN)
 def heat(li):
-     LEFT = 0
-     RIGHT = SIZE
-     UP = SIZE
-     DOWN = 0
+    #  LEFT = 0
+    #  RIGHT = SIZE
+    #  UP = SIZE
+    #  DOWN = 0
 
      prev_heat_map = li.copy() # НА ЭТОЙ КАРТЕ БЕРУТ ЗНАЧЕНИЯ
      heat_map = li.copy() # НА ЭТОЙ КАРТЕ ВСТАВЛЯЮТ РЕЗУЛЬТАТ
@@ -49,7 +49,7 @@ def heat(li):
              for x in range(0, SIZE+1):
                   
                   if( (x > 0 and x < SIZE) and (y > 0 and y < SIZE)):
-                       heat_map[y][x] = round(1/4*(prev_heat_map[y-1][x] + prev_heat_map[y+1][x] + prev_heat_map[y][x-1] + prev_heat_map[y][x+1]), 5)
+                       heat_map[y][x] = round(1/4*(prev_heat_map[y-1][x] + prev_heat_map[y+1][x] + prev_heat_map[y][x-1] + prev_heat_map[y][x+1]), 3)
                  
                 #  if(x == 0 and y == 0): #ЛЕВЫЙ-НИЖНИЙ УГОЛ
                 #       heat_map[y][x] = 1/4*(prev_heat_map[y][x+1] + prev_heat_map[y+1][x])
