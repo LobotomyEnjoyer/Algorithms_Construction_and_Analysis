@@ -1,37 +1,10 @@
 # УРАВНЕНИЕ ЛАПЛАСА
 
 
-# ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-
-# ВЫВОД ТЕПЛОВОЙ МАТРИЦЫ
-def display_matr(li):
-     matr = li.copy()
-     matr.reverse()
-     for line in matr:
-          text = ""
-          for i in line:
-               text += str(i) + "\t"
-          print(text)
-
-# ТЕПЛОВАЯ КАРТА
-def sns_heatmap(li):
-     heat_map = li.copy()
-     heat_map.reverse()
-     sns.heatmap(heat_map, annot=False, cmap="YlGnBu")
-     plt.title("Laplacian Heatmap")
-     plt.show()
-
-# ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
-
-
-
+# ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
 
 def INTEGRAL_METHOD():
-      # ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
+      
       import numpy as np
       from scipy.optimize import newton_krylov
       from numpy import cosh, zeros_like, mgrid, zeros
@@ -69,17 +42,42 @@ def INTEGRAL_METHOD():
       plt.colorbar()
       plt.show()
       
-      # ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
+# ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
 
 
 
 
 
 
-
+# ===== МЕТОД КВАДРАТОВ =====
 
 def SQUARES_METHOD():
-      # ===== МЕТОД КВАДРАТОВ =====
+
+      # ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
+
+      import seaborn as sns
+      import matplotlib.pyplot as plt
+      
+      
+      # ВЫВОД ТЕПЛОВОЙ МАТРИЦЫ
+      def display_matr(li):
+           matr = li.copy()
+           matr.reverse()
+           for line in matr:
+                text = ""
+                for i in line:
+                     text += str(i) + "\t"
+                print(text)
+      
+      # ТЕПЛОВАЯ КАРТА
+      def sns_heatmap(li):
+           heat_map = li.copy()
+           heat_map.reverse()
+           sns.heatmap(heat_map, annot=False, cmap="YlGnBu")
+           plt.title("Laplacian Heatmap")
+           plt.show()
+      
+      # ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
       
       SIZE = int(input("Размер определяется как квадратная матрица.\nВведите размер тепловой карты (целое число): ")) # размер квадратного поля
       ITERATIONS = int(input("Введите количество итераций (целое число): "))
@@ -124,9 +122,8 @@ def SQUARES_METHOD():
       fill_matr(li)
       li = heat(li)
       sns_heatmap(li)
-      
-      # ===== МЕТОД КВАДРАТОВ =====
 
+# ===== МЕТОД КВАДРАТОВ =====
 
 
 
