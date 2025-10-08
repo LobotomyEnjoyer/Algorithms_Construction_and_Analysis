@@ -73,9 +73,11 @@ def SQUARES_METHOD():
       def sns_heatmap(li):
            heat_map = li.copy()
            heat_map.reverse()
-           sns.heatmap(heat_map, annot=False, cmap="YlGnBu")
+           sns.heatmap(heat_map, annot=False, cmap="plasma") #  cmap = "YlGnBu"
+           plt.contour(heat_map, levels = [i*0.1 for i in range(2, 10, 2)], linestyles='dashed', linewidths=1)
            plt.title("Laplacian Heatmap")
            plt.show()
+          
       
       # ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
       
