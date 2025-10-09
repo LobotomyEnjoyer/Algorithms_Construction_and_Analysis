@@ -111,14 +111,13 @@ def SQUARES_METHOD():
       
       # TEMP = 1/4*(LEFT+RIGHT+UP+DOWN) МЕТОД КВАДРАТОВ
       def heat(li):
-           prev_heat_map = li.copy() # НА ЭТОЙ КАРТЕ БЕРУТ ЗНАЧЕНИЯ
-           heat_map = li.copy() # НА ЭТОЙ КАРТЕ ВСТАВЛЯЮТ РЕЗУЛЬТАТ
+           heat_map = li.copy()
            for iter in range(0, ITERATIONS+1):
                for y in range(0, SIZE+1):
                    for x in range(0, SIZE+1):
                         
                         if( (x > 0 and x < SIZE) and (y > 0 and y < SIZE)):
-                             heat_map[y][x] = round(1/4*(prev_heat_map[y-1][x] + prev_heat_map[y+1][x] + prev_heat_map[y][x-1] + prev_heat_map[y][x+1]), 3)
+                             heat_map[y][x] = round(1/4*(heat_map[y-1][x] + heat_map[y+1][x] + heat_map[y][x-1] + heat_map[y][x+1]), 5)
       
            return heat_map.copy()
       
