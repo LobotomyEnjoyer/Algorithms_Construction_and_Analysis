@@ -72,10 +72,11 @@ def SQUARES_METHOD():
       # ТЕПЛОВАЯ КАРТА
       def sns_heatmap(li):
            heat_map = li.copy()
-           heat_map.reverse()
-           sns.heatmap(heat_map, annot=False, cmap="plasma") #  cmap = "YlGnBu"
-           plt.contour(heat_map, levels = [i*0.1 for i in range(2, 10, 2)], linestyles='dashed', linewidths=1)
-           plt.title("Laplacian Heatmap")
+          #  heat_map.reverse() - это лишнее, extent сам переворачивает по заданным параметрам.
+          #  ОШИБКА, КОТОРУЮ НУЖНО ВКЛЮЧИТЬ В ОТЧЕТ: Ни в коем случае нельзя использовать для отрисовки тепловую карту из одной библиотеки
+          #  и изолинии из другой библиотеки (тепловая карта из sns и отрисовка изолиний из plt)
+           plt.imshow(heat_map, cmap="plasma", extent = [0, 1.0, 0, 1.0]) #  cmap = "YlGnBu"
+           plt.contourf(heat_map, [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]) # linestyles='solid', linewidths=1
            plt.show()
           
       
