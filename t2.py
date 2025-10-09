@@ -121,8 +121,6 @@ def SQUARES_METHOD():
       
            return heat_map.copy()
       
-      
-      
       li = square_matr(SIZE)
       fill_matr(li)
       li = heat(li)
