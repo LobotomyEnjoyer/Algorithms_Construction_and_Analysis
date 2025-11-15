@@ -2,31 +2,27 @@
 
 
 
-choice = int(input("Выберите метод решения:" \
-"1) МЕТОД ПЕРЕБОРА" \
-"2) ГЕНЕТИЧЕСКИЙ АЛГОРИТМ" \
-"0) ВЫХОД"))
+
+# МЕТОД ПЕРЕБОРА (ЦИКЛОМ)
+START = 0
+STOP = 31
+
+count = 0
+for a in range(START, STOP):
+    for b in range(START, STOP):
+        for c in range(START, STOP):
+            for d in range(START, STOP):
+                if(a + 2*b + 3*c + 4*d == 30):
+                    count += 1
+
+print(f"in [{START}, {STOP}) total answers found: {count}")
 
 
-
-
-match choice:
-    case 1: # МЕТОД ПЕРЕБОРА (ЦИКЛОМ)
-     START = 0
-     STOP = 31
-
-     count = 0
-     for a in range(START, STOP):
-         for b in range(START, STOP):
-             for c in range(START, STOP):
-                 for d in range(START, STOP):
-                     if(a + 2*b + 3*c + 4*d == 30):
-                         count += 1
-
-     print(f"in [{START}, {STOP}) total answers found: {count}")
-    case 2: #  ГЕНЕТИЧЕСКИЙ АЛГОРИТМ
-     pass
-    case 0:
-     print("Выход")
-    case _:
-     print("Выход")
+#  ГЕНЕТИЧЕСКИЙ АЛГОРИТМ
+# Алгоритм:
+# 1) инициализация популяции (случайными значениями в случайном количестве. Гены особи - неизвестные a, b, c, d)
+# 2) оценка приспособленности (по формуле)
+# 3) селекция (метод рулетки или турнирная селекция)
+# 4) скрещивания (берётся часть генов от X и Y, передаются потомку Z)
+# 5) мутация (небольшие изменения в генах потомка Z)
+# 6) формирование нового поколения из потомков. (продолжать процесс до тех пор, пока результаты не будут удовлетворять заданным критериям)
