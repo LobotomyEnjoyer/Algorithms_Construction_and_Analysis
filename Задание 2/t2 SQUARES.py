@@ -1,56 +1,5 @@
 # УРАВНЕНИЕ ЛАПЛАСА
-
-
-# ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
-
-def INTEGRAL_METHOD():
-      
-      import numpy as np
-      from scipy.optimize import newton_krylov
-      from numpy import cosh, zeros_like, mgrid, zeros
-
-      # параметры
-      nx, ny = 75, 75
-      hx, hy = 1./(nx-1), 1./(ny-1)
-      P_left, P_right = 0, 1
-      
-      P_top, P_bottom = 1, 0
-      
-      def residual(P):
-          d2x = zeros_like(P)
-          d2y = zeros_like(P)
-      
-          d2x[1:-1] = (P[2:]   - 2*P[1:-1] + P[:-2]) / hx/hx
-          d2x[0]    = (P[1]    - 2*P[0]    + P_left)/hx/hx
-          d2x[-1]   = (P_right - 2*P[-1]   + P[-2])/hx/hx
-      
-          d2y[:,1:-1] = (P[:,2:] - 2*P[:,1:-1] + P[:,:-2])/hy/hy
-          d2y[:,0]    = (P[:,1]  - 2*P[:,0]    + P_bottom)/hy/hy
-          d2y[:,-1]   = (P_top   - 2*P[:,-1]   + P[:,-2])/hy/hy
-      
-          return d2x + d2y - 0*cosh(P).mean()**2
-      
-      # решение
-      guess = zeros((nx, ny), float)
-      sol = newton_krylov(residual, guess, method='lgmres', verbose=1)
-      print('Residual: %g' % abs(residual(sol)).max())
-      
-      # визуализация
-      import matplotlib.pyplot as plt
-      x, y = mgrid[0:1:(nx*1j), 0:1:(ny*1j)]
-      plt.pcolor(x, y, sol)
-      plt.title("Тепловая карта для уравнения Лапласа")
-      plt.colorbar()
-      plt.show()
-      
-# ===== ИНТЕГРАЛЬНЫЙ МЕТОД =====
-
-
-
-
-
-
-# ===== МЕТОД КВАДРАТОВ =====
+# МЕТОД КВАДРАТОВ
 
 def SQUARES_METHOD():
 
@@ -126,21 +75,5 @@ def SQUARES_METHOD():
       li = heat(li)
       sns_heatmap(li)
 
-# ===== МЕТОД КВАДРАТОВ =====
 
-
-
-
-
-choice = int(input("Выберите метод решения:\n" \
-"1) Интегральный метод.\n" \
-"2) Метод квадратов.\n" \
-"0) Выход из программы.\n"))
-
-match choice:
-     case 1:
-          INTEGRAL_METHOD()
-     case 2:
-          SQUARES_METHOD()
-     case _:
-          pass
+SQUARES_METHOD()
