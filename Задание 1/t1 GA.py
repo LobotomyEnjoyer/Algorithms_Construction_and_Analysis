@@ -36,7 +36,7 @@ def tour_selection(population, N): # турнирная селекция
         winner = ()
         selected = [] # селекция везунчиков (выбрать, на пример, 10-15 везунчиков)
 
-        while len(selected) <= 20:
+        while len(selected) <= (int(0.5*N) if N >= 20 else int(N/2)):
             if decision():
                 X = population[random.randint(0, N-1)]
                 selected.append(X)
