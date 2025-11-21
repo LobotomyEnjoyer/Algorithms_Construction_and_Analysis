@@ -15,7 +15,7 @@ import random
 
 def init_popul(AMOUNT): # создает начальную популяцию
     BOTTOM = 0 # нижняя граница значения гена
-    TOP = 10000 # верхняя граница значения гена
+    TOP = 100 # верхняя граница значения гена
     N = AMOUNT # количество особей
     popul = []
     for i in range(0, N+1):
@@ -54,6 +54,11 @@ def tour_selection(population, N): # турнирная селекция
 def mutation(Z):
     for i in range(len(Z)):
         Z[i] += random.randint(-5, 5)
+    for i in range(len(Z)):
+        if Z[i] < 0:
+            Z[i] *= -1
+        if Z[i] >= 31:
+            Z[i] %= 31
 
 
 
