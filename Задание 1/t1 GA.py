@@ -87,6 +87,8 @@ population = init_popul(NUMBER_OF_SPECIES)
 answers = []
 
 for i in range(1, CYCLES+1):
+    if(len(answers) == 297):
+        break
     print(f"Поколение {i}")
     population = crossingover(tour_selection(population, NUMBER_OF_SPECIES), NUMBER_OF_SPECIES)
     for specie in population:
