@@ -31,7 +31,7 @@ def INTEGRAL_METHOD():
       # решение
       guess = zeros((nx, ny), float)
       sol = newton_krylov(residual, guess, method='lgmres', verbose=1)
-      print('Residual: %g' % abs(residual(sol)).max())
+      print('Остаток: %g' % abs(residual(sol)).max())
       
       # визуализация
       import matplotlib.pyplot as plt
