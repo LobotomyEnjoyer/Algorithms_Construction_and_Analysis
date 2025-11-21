@@ -12,4 +12,4 @@ for a in range(START, STOP):
                 if(a + 2*b + 3*c + 4*d == 30):
                     count += 1
 
-print(f"in [{START}, {STOP}) total answers found: {count}")
+print(f"на полуинтервале [{START}, {STOP}) найдено {count} решений.")
