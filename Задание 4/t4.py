@@ -68,7 +68,7 @@ def is_safe(row, col, board): # проверяет на безопасноть �
     return True
 
 
-def otkat(row, board): # откатывается к N-1 ферзю, если не удалось разместить N-го ферзя
+def rollback(row, board): # откатывается к N-1 ферзю, если не удалось разместить N-го ферзя
     if board[0] == N-1 and row == 0:
         END()
 
@@ -82,7 +82,7 @@ def otkat(row, board): # откатывается к N-1 ферзю, если н
                 board[row] = col
                 return row + 1
             elif col == N-1:
-                return otkat(row - 1, board)
+                return rollback(row - 1, board)
             
     elif start_col == N-1:
 
@@ -90,11 +90,11 @@ def otkat(row, board): # откатывается к N-1 ферзю, если н
             board[row] = start_col
             return row + 1
         else:
-            return otkat(row - 1, board)
+            return rollback(row - 1, board)
         
     else:
 
-        return otkat(row - 1, board)
+        return rollback(row - 1, board)
 
 
 
@@ -103,7 +103,7 @@ def solve(row, board): # ищет всевозможные решения (ре�
         if board not in solutions:
             solutions.append(board.copy())
             count()
-        solve(otkat(row - 1, board), board)
+        solve(rollback(row - 1, board), board)
     
     else:
 
@@ -113,7 +113,7 @@ def solve(row, board): # ищет всевозможные решения (ре�
                 solve(row + 1, board)
             
             elif col == N-1:
-                Row = otkat(row - 1, board)
+                Row = rollback(row - 1, board)
                 if Row >= 0 and Row <= N-1:
                     solve(Row, board)
 

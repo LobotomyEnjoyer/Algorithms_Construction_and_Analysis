@@ -1,5 +1,5 @@
 # ЗАДАЧА КОММИВОЯЖЁРА
-# ЗАДАЧА: из пункта А по вершинам вернуться в пункт А за МИНИМАЛЬНОЕ число шагов и найти самый короткий путь
+# ЗАДАЧА: из пункта А по вершинам вернуться в пункт А за МИНИМАЛЬНОЕ число шагов и найти самый короткий путь. Всего городов будет 10.
 
 # АЛГОРИТМ МЕТОДА ПЕРЕБОРА
 # пара вида (N1, N2) является расстоянием между пунктами N1 и N2 (расстояние между одним и тем же пунктом = 0)
@@ -8,44 +8,118 @@
 # 1) строим квадратную матрицу NxN для N вершин и заполняем её
 # 2) путь представляем в виде списка/строки из вершин
 # 3) выбираем начальный пункт
-# 4) строим всевозможные маршруты
+# 4) строим всевозможные маршруты (путём перестановок)
 # 5) вычисляем длину найденного маршрута и сверяем его с минимальным (если такового нет, то записываем маршрут как минимальный)
 # 6) после перебора выводим маршрут и его длину
 
-PATH_MATRIX = [[0, 15, 31, 41], # Матрица расстояний между городами
-               [15, 0, 27, 17],
-               [31, 27, 0, 11],
-               [41, 17, 11, 0]] # A - 0; B - 1; C - 2; D - 3
+import random as rnd
+import itertools as it
+
+global CITIES
+CITIES = int(input("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при 8 городах и выше!\nВведите число городов (целое число): "))
+
+
+def matrix_generator(size = CITIES):
+# верхняя и нижняя граница для функции генерации случайных целых чисел соответственно.
+    TOP = 15
+    BOTTOM = 5
+    matrix = []
+    for start in range(size):
+        row = [-1] * size
+        for i in range(start, size):
+            row[i] = rnd.randint(BOTTOM, TOP)
+        matrix.append(row)
+    
+    for i in range(size):
+        matrix[i][i] = 0
+    
+    for row in range(size):
+        for col in range(size):
+            if matrix[row][col] == -1:
+                matrix[row][col] = matrix[col][row]
+    
+    return matrix.copy()
+
+
 
 def get_length(_path):
     sum = 0
-    for i in range(4):
+    for i in range(CITIES):
         sum += PATH_MATRIX[_path[i]][_path[i+1]]
     return sum
 
-def path_constructor() -> list:
+# функция example_path_constructor() строит список путей вида:
+# [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+# [1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 1]
+# [2, 1, 0, 3, 4, 5, 6, 7, 8, 9, 2]
+# [3, 1, 2, 0, 4, 5, 6, 7, 8, 9, 3]
+# [4, 1, 2, 3, 0, 5, 6, 7, 8, 9, 4]
+# [5, 1, 2, 3, 4, 0, 6, 7, 8, 9, 5]
+# [6, 1, 2, 3, 4, 5, 0, 7, 8, 9, 6]
+# [7, 1, 2, 3, 4, 5, 6, 0, 8, 9, 7]
+# [8, 1, 2, 3, 4, 5, 6, 7, 0, 9, 8]
+# [9, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9]
+# для функции перестановок. В примере выше маршруты строятся для 10 городов. А - 0, В - 1, С - 2, ...
+def example_path_constructor(): 
+    example_path = [i for i in range(CITIES)]
+    example_path.append(example_path[0])
+
+    paths = []
+    paths.append(example_path)
+
+    for P in range(1, CITIES):
+        path = example_path.copy()
+        path[0], path[CITIES] = P, P
+        for i in range(1, CITIES):
+            if path[i] == P:
+                path[i] = 0
+                paths.append(path.copy())
+    
+    return paths
+
+# строит всевозможные маршруты для всех городов
+def path_constructor():
+    example_paths = example_path_constructor()
     all_paths = []
-    for P1 in range(4):
-        _path = []
-        _path.append(P1)
-        for P2 in range(4):
-            if P2 not in _path:
-                _path.append(P2)
-                for P3 in range(4):
-                    if P3 not in _path:
-                        _path.append(P3)
-                        for P4 in range(4):
-                            if P4 not in _path:
-                                _path.append(P4)
-                                _path.append(P1)
-                                all_paths.append(_path.copy())
-                                _path.pop(4) # использую метод pop() для устранения пунктов из пути, дабы цикл мог построить новые пути
-                                _path.pop(3) 
-                        _path.pop(2)
-                _path.pop(1)
-    return all_paths.copy()
+    for ex_path in example_paths:
+        paths = sorted([e for e in set(it.permutations(ex_path))]) 
+        for path in paths:
+            all_paths.append(path)
+
+    all_valid_paths = []
+
+    for path in all_paths:
+        if path[0] == path[CITIES]:
+            all_valid_paths.append(path)
+    
+    return all_valid_paths.copy()
 
 
+
+# строит путь для перестановки только для пункта А под индексом 0
+def alternative_example_path_constructor():
+    path = [i for i in range(CITIES)]
+    path.append(path[0])
+    return path.copy()
+
+# строит всевозможные пути для пункта А под индексом 0
+def alternative_path_constructor():
+    example_paths = alternative_example_path_constructor()
+    all_paths = []
+    paths = sorted([e for e in set(it.permutations(example_paths))]) 
+    for path in paths:
+        all_paths.append(path)
+
+    all_valid_paths = []
+
+    for path in all_paths:
+        if path[0] == path[CITIES]:
+            all_valid_paths.append(path)
+    
+    return all_valid_paths.copy()
+
+
+# конвертирует путь вида [0, 1, 2, 3, 0] в строку вида ABCDA
 def path_to_string(path):
     path_string = ""
     ASCII_start_pos = 65
@@ -53,16 +127,27 @@ def path_to_string(path):
         path_string += chr(ASCII_start_pos + P)
     return path_string
 
+# среди всех маршрутов ищет кратчайший
 def find_minimal(paths):
-    min = 99999
+    min = 9999999999999999
     good_path = []
     for path in paths:
         if get_length(path) < min:
             min = get_length(path)
-            good_path = path.copy()
+            good_path = path
     return good_path
 
-all_paths = path_constructor()
-minimal = find_minimal(all_paths)
 
-print(path_to_string(minimal), get_length(minimal), minimal)
+print("Матрица маршрутов между городами")
+PATH_MATRIX = matrix_generator()
+for row in PATH_MATRIX:
+    print(row)
+
+print("\nИдёт построение всевозможных путей, ожидайте...\n")
+paths = alternative_path_constructor()
+
+print("Маршруты построены. Ищем кратчайший путь...\n")
+minimal = find_minimal(paths)
+
+print(f"Кратчайший путь имеет вид {path_to_string(minimal)} и его длина равна {get_length(minimal)}")
+
