@@ -118,7 +118,7 @@ def matrix_generator(size):
     return matrix.copy()
 
 # Возвращает длину пути
-def get_length(_path):
+def get_length(_path) -> int:
     sum = 0
     for i in range(NUMBER_OF_CITIES):
         sum += PATH_MATRIX[_path[i]][_path[i+1]]
@@ -133,7 +133,7 @@ def path_to_string(path):
     return path_string
 
 # среди всех маршрутов ищет кратчайший
-def find_minimal(paths):
+def find_minimal(paths) -> list:
     min = 9999999999999999
     good_path = []
     for path in paths:
@@ -149,11 +149,15 @@ CYCLES = abs(int(input("Введите количество поколений (
 NUMBER_OF_SPECIES = abs(int(input("Введите количество особей (целое число): ")))
 PATH_MATRIX = matrix_generator(NUMBER_OF_CITIES)
 
-# PATH_MATRIX = [[0, 9, 6, 10, 9],
-#                [9, 0, 6, 11, 11],
-#                [6, 6, 0, 6, 15],
-#                [10, 11, 6, 0, 5],
-#                [9, 11, 15, 5, 0]]
+# PATH_MATRIX = [[0, 8, 6, 7, 9, 8, 13, 15, 9], # для проверки точности. точный ответ = 60
+#                [8, 0, 5, 5, 14, 10, 15, 10, 12],
+#                [6, 5, 0, 10, 8, 8, 8, 12, 12],
+#                [7, 5, 10, 0, 9, 12, 6, 6, 11],
+#                [9, 14, 8, 9, 0, 5, 10, 5, 14],
+#                [8, 10, 8, 12, 5, 0, 14, 11, 8],
+#                [13, 15, 8, 6, 10, 14, 0, 14, 10],
+#                [15, 10, 12, 6, 5, 11, 14, 0, 12],
+#                [9, 12, 12, 11, 14, 8, 10, 12, 0]]
 
 print("\nПоиск пути происходит для матрицы путей вида\n")
 for row in PATH_MATRIX:
@@ -169,8 +173,8 @@ for i in range(1, CYCLES+1):
         min = find_minimal(population)
     else:
         min2 = find_minimal(population)
-        if min2 < min:
-            min = find_minimal(population)
+        if get_length(min2) < get_length(min):
+            min = min2.copy()
 
 print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути равна {get_length(min)}")
 
