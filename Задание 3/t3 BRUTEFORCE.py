@@ -1,5 +1,5 @@
 # ЗАДАЧА КОММИВОЯЖЁРА
-# ЗАДАЧА: из пункта А по вершинам вернуться в пункт А за МИНИМАЛЬНОЕ число шагов и найти самый короткий путь. Всего городов будет 10.
+# ЗАДАЧА: из пункта А по вершинам вернуться в пункт А за МИНИМАЛЬНОЕ число шагов и найти самый короткий путь.
 
 # АЛГОРИТМ МЕТОДА ПЕРЕБОРА
 # пара вида (N1, N2) является расстоянием между пунктами N1 и N2 (расстояние между одним и тем же пунктом = 0)
@@ -16,35 +16,35 @@ import random as rnd
 import itertools as it
 
 global CITIES
-CITIES = int(input("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при 8 городах и выше!\nВведите число городов (целое число): "))
+NUMBER_OF_CITIES = int(input("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при 8 городах и выше!\nВведите число городов (целое число): "))
 
 
-def matrix_generator(size = CITIES):
+def matrix_generator(num_of_cities):
 # верхняя и нижняя граница для функции генерации случайных целых чисел соответственно.
     TOP = 15
     BOTTOM = 5
     matrix = []
-    for start in range(size):
-        row = [-1] * size
-        for i in range(start, size):
+    for start in range(num_of_cities):
+        row = [-1] * num_of_cities
+        for i in range(start, num_of_cities):
             row[i] = rnd.randint(BOTTOM, TOP)
         matrix.append(row)
     
-    for i in range(size):
+    for i in range(num_of_cities):
         matrix[i][i] = 0
     
-    for row in range(size):
-        for col in range(size):
+    for row in range(num_of_cities):
+        for col in range(num_of_cities):
             if matrix[row][col] == -1:
                 matrix[row][col] = matrix[col][row]
     
     return matrix.copy()
 
 
-
+# Возвращает длину пути
 def get_length(_path):
     sum = 0
-    for i in range(CITIES):
+    for i in range(NUMBER_OF_CITIES):
         sum += PATH_MATRIX[_path[i]][_path[i+1]]
     return sum
 
@@ -61,16 +61,16 @@ def get_length(_path):
 # [9, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9]
 # для функции перестановок. В примере выше маршруты строятся для 10 городов. А - 0, В - 1, С - 2, ...
 def example_path_constructor(): 
-    example_path = [i for i in range(CITIES)]
+    example_path = [i for i in range(NUMBER_OF_CITIES)]
     example_path.append(example_path[0])
 
     paths = []
     paths.append(example_path)
 
-    for P in range(1, CITIES):
+    for P in range(1, NUMBER_OF_CITIES):
         path = example_path.copy()
-        path[0], path[CITIES] = P, P
-        for i in range(1, CITIES):
+        path[0], path[NUMBER_OF_CITIES] = P, P
+        for i in range(1, NUMBER_OF_CITIES):
             if path[i] == P:
                 path[i] = 0
                 paths.append(path.copy())
@@ -89,7 +89,7 @@ def path_constructor():
     all_valid_paths = []
 
     for path in all_paths:
-        if path[0] == path[CITIES]:
+        if path[0] == path[NUMBER_OF_CITIES]:
             all_valid_paths.append(path)
     
     return all_valid_paths.copy()
@@ -98,7 +98,7 @@ def path_constructor():
 
 # строит путь для перестановки только для пункта А под индексом 0
 def alternative_example_path_constructor():
-    path = [i for i in range(CITIES)]
+    path = [i for i in range(NUMBER_OF_CITIES)]
     path.append(path[0])
     return path.copy()
 
@@ -113,7 +113,7 @@ def alternative_path_constructor():
     all_valid_paths = []
 
     for path in all_paths:
-        if path[0] == path[CITIES]:
+        if path[0] == path[NUMBER_OF_CITIES]:
             all_valid_paths.append(path)
     
     return all_valid_paths.copy()
@@ -139,7 +139,7 @@ def find_minimal(paths):
 
 
 print("Матрица маршрутов между городами")
-PATH_MATRIX = matrix_generator()
+PATH_MATRIX = matrix_generator(NUMBER_OF_CITIES)
 for row in PATH_MATRIX:
     print(row)
 

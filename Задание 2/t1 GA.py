@@ -37,9 +37,8 @@ def tour_selection(population, N): # турнирная селекция
         selected = [] # селекция везунчиков (выбрать, на пример, 10-15 везунчиков)
 
         while len(selected) <= (int(0.5*N) if N >= 20 else int(N/2)):
-            if decision():
-                X = population[random.randint(0, N-1)]
-                selected.append(X)
+            X = population[random.randint(0, N-1)]
+            selected.append(X)
         
         for specie in selected:
             if max < fitness_score(specie):
