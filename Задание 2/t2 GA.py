@@ -15,7 +15,7 @@ import random
 
 def init_popul(AMOUNT): # создает начальную популяцию
     BOTTOM = 0 # нижняя граница значения гена
-    TOP = 100 # верхняя граница значения гена
+    TOP = 30 # верхняя граница значения гена
     N = AMOUNT # количество особей
     popul = []
     for i in range(0, N+1):
@@ -96,5 +96,5 @@ for i in range(1, CYCLES+1):
             formula = specie[0] + 2*specie[1] + 3*specie[2] + 4*specie[3]
             print(specie, fitness_score(specie), formula, i)
 
-print(f"Всего ответов: {len(answers)}")
+print(f"Всего решений: {len(answers)}")
 
