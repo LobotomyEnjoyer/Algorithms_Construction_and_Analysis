@@ -61,6 +61,7 @@ def tour_selection(population, N):
     
     return winners.copy()
 
+# функция мутации
 def mutation(Z):
     pos1 = rnd.randint(1, NUMBER_OF_CITIES-1)
     pos2 = rnd.randint(1, NUMBER_OF_CITIES-1)
@@ -72,7 +73,7 @@ def mutation(Z):
     Z[pos1] = Z[pos2]
     Z[pos2] = tmp
 
-
+# функция скрещивания
 def crossingover(parents, N):
     new_gen = []
     while len(new_gen) != N:
@@ -143,13 +144,19 @@ def find_minimal(paths) -> list:
     return good_path
 
 
-print("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при большом количестве особей!\n")
-NUMBER_OF_CITIES = int(input("Введите число городов (целое число): "))
-CYCLES = abs(int(input("Введите количество поколений (целое число): ")))
-NUMBER_OF_SPECIES = abs(int(input("Введите количество особей (целое число): ")))
-# PATH_MATRIX = matrix_generator(NUMBER_OF_CITIES)
 
-PATH_MATRIX =  [[0, 12, 12, 10, 12, 13, 15, 15, 7, 14],
+
+# ГЛАВНАЯ ЧАСТЬ ПРОГРАММЫ
+
+print("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при большом количестве особей!\n")
+choice = int(input("Выберите способ генерации матрицы:\n" \
+"1) Используется фиксированная матрица путей 10х10 с известным ответом.\n" \
+"2) Генерируется случайная матрица заданного размера.\n" \
+"Выбор по умолчанию: фиксированная матрица 10х10\n"))
+
+match choice:
+    case 1:
+        PATH_MATRIX =  [[0, 12, 12, 10, 12, 13, 15, 15, 7, 14],
                 [12, 0, 12, 7, 15, 7, 8, 5, 8, 5],
                 [12, 12, 0, 5, 13, 5, 8, 7, 5, 12],
                 [10, 7, 5, 0, 12, 8, 14, 5, 8, 6],
@@ -158,12 +165,27 @@ PATH_MATRIX =  [[0, 12, 12, 10, 12, 13, 15, 15, 7, 14],
                 [15, 8, 8, 14, 10, 9, 0, 8, 8, 15],
                 [15, 5, 7, 5, 6, 5, 8, 0, 13, 9],
                 [7, 8, 5, 8, 9, 11, 8, 13, 0, 5],
-                [14, 5, 12, 6, 11, 14, 15, 9, 5, 0]] # для проверки. Кратчайший путь = 66
+                [14, 5, 12, 6, 11, 14, 15, 9, 5, 0]] # матрица 10х10 для проверки. Кратчайший путь = 66
+        NUMBER_OF_CITIES = 10
+    case 2:
+        NUMBER_OF_CITIES = int(input("Введите число городов (целое число): "))
+        PATH_MATRIX = matrix_generator(NUMBER_OF_CITIES)
+    
+    case _:
+        PATH_MATRIX =  [[0, 12, 12, 10, 12, 13, 15, 15, 7, 14],
+                [12, 0, 12, 7, 15, 7, 8, 5, 8, 5],
+                [12, 12, 0, 5, 13, 5, 8, 7, 5, 12],
+                [10, 7, 5, 0, 12, 8, 14, 5, 8, 6],
+                [12, 15, 13, 12, 0, 14, 10, 6, 9, 11],
+                [13, 7, 5, 8, 14, 0, 9, 5, 11, 14],
+                [15, 8, 8, 14, 10, 9, 0, 8, 8, 15],
+                [15, 5, 7, 5, 6, 5, 8, 0, 13, 9],
+                [7, 8, 5, 8, 9, 11, 8, 13, 0, 5],
+                [14, 5, 12, 6, 11, 14, 15, 9, 5, 0]] # матрица 10х10 для проверки. Кратчайший путь = 66
+        NUMBER_OF_CITIES = 10
 
-print("\nПоиск пути происходит для матрицы путей вида\n")
-for row in PATH_MATRIX:
-    print(row)
-print('\n')
+CYCLES = abs(int(input("Введите количество поколений (целое число): ")))
+NUMBER_OF_SPECIES = abs(int(input("Введите количество особей (целое число): ")))
 
 population = init_population(NUMBER_OF_SPECIES)
 min = []
@@ -176,6 +198,11 @@ for i in range(1, CYCLES+1):
         min2 = find_minimal(population)
         if get_length(min2) < get_length(min):
             min = min2.copy()
+
+print("\nПоиск пути происходит для матрицы путей вида\n")
+for row in PATH_MATRIX:
+    print(row)
+print('\n')
 
 print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути равна {get_length(min)}")
 
