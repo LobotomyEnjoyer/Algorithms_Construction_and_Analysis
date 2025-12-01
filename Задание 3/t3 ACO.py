@@ -230,4 +230,4 @@ for row in PATH_MATRIX:
     print(row)
 print('\n')
 
-print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути равна {get_length(min)}")
+print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути L = {get_length(min)}")

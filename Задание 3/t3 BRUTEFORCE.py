@@ -185,4 +185,4 @@ paths = faster_path_constructor()
 print("Маршруты построены. Ищем кратчайший путь...\n")
 minimal = find_minimal(paths)
 
-print(f"Кратчайший путь имеет вид {path_to_string(minimal)} и его длина равна {get_length(minimal)}")
+print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути L = {get_length(min)}")
