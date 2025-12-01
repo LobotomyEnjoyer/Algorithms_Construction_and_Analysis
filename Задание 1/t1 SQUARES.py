@@ -4,12 +4,10 @@
 
 
 # ===== ФУНКЦИИ ВИЗУАЛИЗАЦИИ =====
-
-import seaborn as sns
 import matplotlib.pyplot as plt
       
       
-# ВЫВОД ТЕПЛОВОЙ МАТРИЦЫ
+# ВЫВОД ЗНАЧЕНИЙ САМОЙ МАТРИЦЫ
 def display_matr(li):
      matr = li.copy()
      matr.reverse()
@@ -20,7 +18,7 @@ def display_matr(li):
           print(text)
       
 # ТЕПЛОВАЯ КАРТА
-def sns_heatmap(li):
+def display_heatmap(li):
      heat_map = li.copy()
 #  heat_map.reverse() - это лишнее, extent сам переворачивает по заданным параметрам.
 #  ОШИБКА, КОТОРУЮ НУЖНО ВКЛЮЧИТЬ В ОТЧЕТ: Ни в коем случае нельзя использовать для отрисовки тепловую карту из одной библиотеки
@@ -71,5 +69,5 @@ def heat(li):
 li = square_matr(SIZE)
 fill_matr(li)
 li = heat(li)
-sns_heatmap(li)
+display_heatmap(li)
 
