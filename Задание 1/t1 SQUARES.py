@@ -25,7 +25,7 @@ def display_heatmap(li):
 #  и изолинии из другой библиотеки (тепловая карта из sns и отрисовка изолиний из plt)
      plt.imshow(heat_map, cmap="plasma", extent = [0, 1.0, 0, 1.0]) #  cmap = "YlGnBu"
      plt.contourf(heat_map, [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]) # linestyles='solid', linewidths=1
-     plt.title("Тепловая карта для уравнения Лапласа")
+     plt.title("Тепловая карта для уравнения Лапласа\nМетод сеток")
      plt.colorbar()
      plt.show()
           
