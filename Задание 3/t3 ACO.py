@@ -98,17 +98,17 @@ def decision(taboo: list, i: int, j: int) -> bool:
 
 # строит путь одного муравья
 # МУРАВЕЙ ХРАНИТ ВЕРШИНУ, В КОТОРОЙ ОН СТОИТ
-def construct_ant_path(ant) -> list:
-    taboo = [ant[0]]
-    path = [ant[0]]
+def construct_ant_path(ant: int) -> list:
+    taboo = [ant]
+    path = [ant]
 
     while len(path) != NUMBER_OF_CITIES:
         j = rnd.randint(0, NUMBER_OF_CITIES-1)
         if j not in taboo:
-            if decision(taboo, ant[0], j):
+            if decision(taboo, ant, j):
                 taboo.append(j)
                 path.append(j)
-                ant[0] = j
+                ant = j
     
     path.append(taboo[0])
 
@@ -117,10 +117,10 @@ def construct_ant_path(ant) -> list:
 
 # инициализирует колонию, которая затем строит пути. Начальные вершины РАЗНЫЕ
 def init_colony() -> list:
-    colony = [[rnd.randint(0, NUMBER_OF_CITIES-1)] for _ in range(NUMBER_OF_ANTS)]
+    colony = [rnd.randint(0, NUMBER_OF_CITIES-1) for _ in range(NUMBER_OF_ANTS)]
     ant_paths = []
     for ant in colony:
-        path = construct_ant_path(ant.copy())
+        path = construct_ant_path(ant)
         ant_paths.append(path.copy())
     
     for path in ant_paths:
@@ -131,9 +131,9 @@ def init_colony() -> list:
 # такой же алгоритм, но фиксированная начальная вершина А - 0
 def optimized_init_colony() -> list:
     ant_paths = []
-    ant = [0]
+    ant = 0
     for _ in range(NUMBER_OF_ANTS):
-        path = construct_ant_path(ant.copy())
+        path = construct_ant_path(ant)
         ant_paths.append(path.copy())
     
     return ant_paths.copy()
@@ -172,9 +172,9 @@ def find_minimal(paths) -> list:
 
 print("\nВНИМАНИЕ!\nВремя выполнения программы сильно увеличивается при большом количестве муравьев и городов!\n")
 
-choice = int(input("Выберите способ генерации матрицы:\n" \
-"1) Используется фиксированная матрица путей 10х10 с известным ответом.\n" \
-"2) Генерируется случайная матрица заданного размера.\n" \
+choice = int(input("Выберите способ генерации матрицы путей:\n" \
+"1) Использовать фиксированную матрицу путей 10х10 с известным кратчайшим путём равным 66.\n" \
+"2) Генерировать случайную матрицу заданного размера.\n" \
 "Выбор по умолчанию: фиксированная матрица 10х10\n"))
 
 match choice:
