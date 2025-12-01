@@ -210,7 +210,7 @@ match choice:
         PHEROMON_MATRIX = init_pm(10)
         NUMBER_OF_CITIES = 10
 
-CYCLES = abs(int(input("Введите количество поколений (целое число): ")))
+CYCLES = abs(int(input("Введите количество обходов (целое число): ")))
 NUMBER_OF_ANTS = abs(int(input("Введите количество муравьев (целое число): ")))
 
 min = []
