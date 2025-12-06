@@ -48,12 +48,11 @@ def square_matr(size):
       
 # ВСТАВКА КРАЕВЫХ УСЛОВИЙ
 def fill_matr(li):
-     for y in range(SIZE+1):
-          for x in range(SIZE+1):
-               if(x == SIZE and y == 0) or (x == 0 and y == SIZE):
-                    li[y][x] = 0.5
-               elif(y == SIZE and x != SIZE) or (x == SIZE and y != SIZE) or (y == SIZE and x == SIZE):
-                    li[y][x] = 1
+    for i in range(SIZE+1):
+        li[i][SIZE] = 1
+        li[SIZE][i] = 1
+    li[SIZE][0] = 0.5
+    li[0][SIZE] = 0.5
       
       
 # TEMP = 1/4*(LEFT+RIGHT+UP+DOWN) МЕТОД КВАДРАТОВ
