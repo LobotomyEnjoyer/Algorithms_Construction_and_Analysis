@@ -14,7 +14,7 @@
 
 import random as rnd
 import itertools as it
-import matplotlib.pyplot as plt
+
 
 def matrix_generator(num_of_cities):
 # верхняя и нижняя граница для функции генерации случайных целых чисел соответственно.
@@ -180,4 +180,4 @@ paths = faster_path_constructor()
 print("Маршруты построены. Ищем кратчайший путь...\n")
 minimal = find_minimal(paths)
 
-print(f"Кратчайший путь имеет вид {path_to_string(min)} и длина его пути L = {get_length(min)}")
+print(f"Кратчайший путь имеет вид {path_to_string(minimal)} и длина его пути L = {get_length(minimal)}")

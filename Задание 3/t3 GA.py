@@ -18,7 +18,7 @@
 # ...
 
 import random as rnd
-import matplotlib.pyplot as plt
+
 
 # генерирует особь
 def init_specimen():

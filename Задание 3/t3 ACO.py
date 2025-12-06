@@ -34,7 +34,6 @@
 # ...
 
 import random as rnd
-import matplotlib.pyplot as plt
 
 
 # инициализация матрицы феромонов
