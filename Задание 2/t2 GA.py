@@ -52,8 +52,7 @@ def tour_selection(population, N): # турнирная селекция
 
 def mutation(Z):
     for i in range(len(Z)):
-        if decision():
-            Z[i] += random.randint(-2, 2)
+        Z[i] += random.randint(-1, 1)
         if Z[i] < 0:
             Z[i] *= -1
         if Z[i] >= 31:
@@ -75,7 +74,7 @@ def crossingover(parents, N):
         
 
 def decision():
-    return random.random() < 0.3
+    return random.random() < 0.5
 
 
 
