@@ -52,8 +52,8 @@ def tour_selection(population, N): # турнирная селекция
 
 def mutation(Z):
     for i in range(len(Z)):
-        Z[i] += random.randint(-5, 5)
-    for i in range(len(Z)):
+        if decision():
+            Z[i] += random.randint(-2, 2)
         if Z[i] < 0:
             Z[i] *= -1
         if Z[i] >= 31:
@@ -75,7 +75,7 @@ def crossingover(parents, N):
         
 
 def decision():
-    return random.random() < 0.50
+    return random.random() < 0.3
 
 
 
@@ -88,13 +88,13 @@ answers = []
 for i in range(1, CYCLES+1):
     if(len(answers) == 297):
         break
-    print(f"Поколение {i}")
+    # print(f"Поколение {i}")
     population = crossingover(tour_selection(population, NUMBER_OF_SPECIES), NUMBER_OF_SPECIES)
     for specie in population:
         if fitness_score(specie) == 1 and (specie not in answers):
             answers.append(specie)
             formula = specie[0] + 2*specie[1] + 3*specie[2] + 4*specie[3]
-            print(specie, fitness_score(specie), formula, i)
+            print(f"решение: {specie}       поколение: {i}      всего найдено решений: {len(answers)}")
 
-print(f"Всего решений: {len(answers)}")
+print(f"\nПроцесс завершён. Всего решений: {len(answers)}")
 
