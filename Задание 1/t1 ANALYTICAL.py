@@ -71,7 +71,7 @@ def analytical_function(depth, y, x):
           
       
 # u(x,y) = Σ_{n=1}^{∞} C_n · [sin(nπx)·sinh(nπy) + sin(nπy)·sinh(nπx)] - аналитический метод
-# C_n = (2*cos(PI*n) - 2) / (sinh(PI*n)*PI*n)
+# C_n = (2 - 2*cos(PI*n)) / (sinh(PI*n)*PI*n)
 def heat(li: list):
      heat_map = li.copy()
      for y in range(SIZE+1):
