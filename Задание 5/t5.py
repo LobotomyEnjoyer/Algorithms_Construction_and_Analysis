@@ -1,442 +1,159 @@
-import random
+def isInBoard(pos):
+    r, c = pos
+    return 0 <= r < 8 and 0 <= c < 8
 
-# Константы
-FIELD_SIZE = 8
-LIMIT_OF_STEPS = 100
-WHITE_KING = '♔'
-BLACK_KING = '♚'
-WHITE_ROOK = '♖'
-EMPTY = '·'
-
-
-# Создает пустую доску
-def create_board():
-    return [[EMPTY for _ in range(FIELD_SIZE)] for _ in range(FIELD_SIZE)]
-
-
-
-# Расставляет фигуры на доске
-def place_pieces(board, bk_pos, wr_pos, wk_pos):
-    # Очищаем доску
-    for i in range(FIELD_SIZE):
-        for j in range(FIELD_SIZE):
-            board[i][j] = EMPTY
-    
-    # Расставляем фигуры
-    bk_x, bk_y = bk_pos
-    wr_x, wr_y = wr_pos
-    wk_x, wk_y = wk_pos
-    
-    board[bk_y][bk_x] = BLACK_KING
-    board[wr_y][wr_x] = WHITE_ROOK
-    board[wk_y][wk_x] = WHITE_KING
-    
-    return board
-
-# Выводит доску с использованием Unicode символов
-def print_board(board):
-    print("  " + " ".join(str(i) for i in range(FIELD_SIZE)))
-    for y in range(FIELD_SIZE):
-        print(f"{y} ", end="")
-        for x in range(FIELD_SIZE):
-            print(f"{board[y][x]} ", end="")
-        print()
-    print()
-
-# Проверяет, атакует ли ладья поле
-def is_attacked_by_rook(wr_pos, target_pos):
-    wr_x, wr_y = wr_pos
-    tx, ty = target_pos
-    return wr_x == tx or wr_y == ty
-
-# Проверяет, атакует ли король поле
-def is_attacked_by_king(wk_pos, target_pos):
-    wk_x, wk_y = wk_pos
-    tx, ty = target_pos
-    return abs(wk_x - tx) <= 1 and abs(wk_y - ty) <= 1
-
-# Проверяет, находится ли черный король под шахом
-def is_in_check(bk_pos, wr_pos, wk_pos):
-    return (is_attacked_by_rook(wr_pos, bk_pos) or 
-            is_attacked_by_king(wk_pos, bk_pos))
-
-# Проверяет, безопасно ли поле для ладьи (не под боем короля)
-def is_safe_for_rook(bk_pos, wr_pos):
-    bk_x, bk_y = bk_pos
-    wr_x, wr_y = wr_pos
-    return not (abs(bk_x - wr_x) <= 1 and abs(bk_y - wr_y) <= 1)
-
-# Проверяет, безопасно ли поле для белого короля (короли не могут стоять рядом)
-def is_safe_for_king(bk_pos, wk_pos):
-    bk_x, bk_y = bk_pos
-    wk_x, wk_y = wk_pos
-    return not (abs(bk_x - wk_x) <= 1 and abs(bk_y - wk_y) <= 1)
-
-
-
-# Возвращает все возможные ходы короля
-def get_king_moves(pos):
-    x, y = pos
+def kingMoves(pos):
     moves = []
-    
-    for dx in [-1, 0, 1]:
-        for dy in [-1, 0, 1]:
-            if dx == 0 and dy == 0:
+    for dr in (-1, 0, 1):
+        for dc in (-1, 0, 1):
+            if dr == 0 and dc == 0:
                 continue
-            new_x, new_y = x + dx, y + dy
-            if 0 <= new_x < FIELD_SIZE and 0 <= new_y < FIELD_SIZE:
-                moves.append((new_x, new_y))
-    
+            nr, nc = pos[0] + dr, pos[1] + dc
+            if isInBoard((nr, nc)):
+                moves.append((nr, nc))
     return moves
 
-
-
-# Возвращает все возможные ходы ладьи
-def get_rook_moves(pos, bk_pos, wk_pos):
-    x, y = pos
+def rookMoves(pos):
     moves = []
-    
-    # Движение по вертикали вверх
-    for new_y in range(y-1, -1, -1):
-        if (x, new_y) != bk_pos and (x, new_y) != wk_pos:
-            moves.append((x, new_y))
-        else:
-            break
-    
-    # Движение по вертикали вниз
-    for new_y in range(y+1, FIELD_SIZE):
-        if (x, new_y) != bk_pos and (x, new_y) != wk_pos:
-            moves.append((x, new_y))
-        else:
-            break
-    
-    # Движение по горизонтали влево
-    for new_x in range(x-1, -1, -1):
-        if (new_x, y) != bk_pos and (new_x, y) != wk_pos:
-            moves.append((new_x, y))
-        else:
-            break
-    
-    # Движение по горизонтали вправо
-    for new_x in range(x+1, FIELD_SIZE):
-        if (new_x, y) != bk_pos and (new_x, y) != wk_pos:
-            moves.append((new_x, y))
-        else:
-            break
-    
+    r, c = pos
+    for nr in range(r - 1, -1, -1):
+        moves.append((nr, c))
+    for nr in range(r + 1, 8):
+        moves.append((nr, c))
+    for nc in range(c - 1, -1, -1):
+        moves.append((r, nc))
+    for nc in range(c + 1, 8):
+        moves.append((r, nc))
     return moves
 
+def squaresAttackedByRook(wk,wr,bk):
+    attacked = []
+    r, c = wr
+    for nr in range(r - 1, -1, -1):
+        attacked.append((nr, c))
+        if (nr, c) == wk or (nr, c) == bk:
+            break
+    for nr in range(r + 1, 8):
+        attacked.append((nr, c))
+        if (nr, c) == wk or (nr, c) == bk:
+            break
+    for nc in range(c - 1, -1, -1):
+        attacked.append((r, nc))
+        if (r, nc) == wk or (r, nc) == bk:
+            break
+    for nc in range(c + 1, 8):
+        attacked.append((r, nc))
+        if (r, nc) == wk or (r, nc) == bk:
+            break
+    return attacked
 
-# Проверяет, является ли позиция валидной
-def is_valid_position(bk_pos, wr_pos, wk_pos):
-    
-    # Фигуры не могут стоять на одной клетке
-    if bk_pos == wr_pos or bk_pos == wk_pos or wr_pos == wk_pos:
-        return False
-    
-    # Белый король не должен быть под шахом
-    if is_attacked_by_king(bk_pos, wk_pos):
-        return False
-    
-    # Ладья не должна быть под боем черного короля
-    if not is_safe_for_rook(bk_pos, wr_pos):
-        return False
-    
-    # Не должно быть шаха черному королю в начальной позиции
-    if is_in_check(bk_pos, wr_pos, wk_pos):
-        return False
-    
-    return True
-
-# Генерирует начальную позицию
-def generate_initial_position():
-    RANDOM_PLACEMENT = int(input("\nКакую расстановку желаете использовать?\n1 - случайная (мат не гарантирован за отведенное число ходов)\n0 - фиксированная (мат гарантирован)\n"))
-
-    # Если расстановка случайная
-    if RANDOM_PLACEMENT:
-        while True:
-            bk_pos = (random.randint(0, FIELD_SIZE-1), random.randint(0, FIELD_SIZE-1))
-            wr_pos = (random.randint(0, FIELD_SIZE-1), random.randint(0, FIELD_SIZE-1))
-            wk_pos = (random.randint(0, FIELD_SIZE-1), random.randint(0, FIELD_SIZE-1))
-        
-            if is_valid_position(bk_pos, wr_pos, wk_pos):
-                return bk_pos, wr_pos, wk_pos
-
-    # Если расстановка фиксированная
-    else:
-        bk_pos = (7,5)
-        wr_pos = (4,4)
-        wk_pos = (4,3)
-
-        if is_valid_position(bk_pos, wr_pos, wk_pos):
-                return bk_pos, wr_pos, wk_pos
-
-
-
-# Возвращает все возможные ходы черного короля
-def get_black_king_moves(bk_pos, wr_pos, wk_pos):
-    moves = []
-    
-    for new_pos in get_king_moves(bk_pos):
-        # Не может встать на клетку с белой фигурой
-        if new_pos == wr_pos or new_pos == wk_pos:
+def blackKingMoves(wk,wr,bk):
+    moves = kingMoves(bk)
+    valid = []
+    for m in moves:
+        if m == wk or m == wr:
             continue
-        
-        # Не может встать под шах
-        if is_in_check(new_pos, wr_pos, wk_pos):
+        if m in squaresAttackedByRook(wk,wr,bk):
             continue
-        
-        # Не может встать рядом с белым королем
-        if not is_safe_for_king(new_pos, wk_pos):
+        if isAdjacent(m, wk):
             continue
-        
-        moves.append(new_pos)
-    
-    return moves
+        valid.append(m)
+    return valid
 
+def isAdjacent( pos1, pos2):
+    return max(abs(pos1[0] - pos2[0]), abs(pos1[1] - pos2[1])) == 1
 
-# Проверяет, мат ли черному королю
-def is_mate(bk_pos, wr_pos, wk_pos):
-    # Если король не под шахом, то не мат
-    if not is_in_check(bk_pos, wr_pos, wk_pos):
+def isCheck(bk):
+    return bk in squaresAttackedByRook(wk,wr,bk)
+
+def isCheckmate(wk,wr,bk):
+    if not isCheck(bk):
         return False
-    
-    # Если есть хотя бы один допустимый ход, то не мат
-    return len(get_black_king_moves(bk_pos, wr_pos, wk_pos)) == 0
+    return len(blackKingMoves(wk,wr,bk)) == 0
 
+def whiteMove(wk,wr,bk):
+    wk_r, wk_c = wk
+    bk_r, bk_c = bk
+    dr = 0 if bk_r == wk_r else (1 if bk_r > wk_r else -1)
+    dc = 0 if bk_c == wk_c else (1 if bk_c > wk_c else -1)
+    new_wk = (wk_r + dr, wk_c + dc)
+    if isInBoard(new_wk) and not isAdjacent(new_wk, bk):
+        wk = new_wk
 
+    wr_r, wr_c = wr
 
-# Проверяет, пат ли
-def is_stalemate(bk_pos, wr_pos, wk_pos):
-    # Если король под шахом, то не пат
-    if is_in_check(bk_pos, wr_pos, wk_pos):
-        return False
-    
-    # Если нет допустимых ходов, то пат
-    return len(get_black_king_moves(bk_pos, wr_pos, wk_pos)) == 0
+    # Двигаем ладью на ту же линию или столбец, что и черный король, без столкновения с белым королём
+    if bk_r != wr_r and bk_c != wr_c:
+        if bk_r == wk[0]:
+            wr = (bk_r, wr_c)
+        else:
+            wr = (wr_r, bk_c)
 
+    # Если ладья заняла позицию белого короля, немного сдвигаем ладью
+    if wr == wk:
+        if wr_r < 7:
+            wr = (wr_r + 1, wr_c)
+        else:
+            wr = (wr_r - 1, wr_c)
 
+    # Если ладья не на одном ряду или колонке с чёрным королём, ставим её на соответствующую линию
+    if wr_r != bk_r and wr_c != bk_c:
+        # Попытаемся поставить на ряд черного короля
+        candidate = (bk_r, wr_c)
+        if candidate != wk and isInBoard(candidate) and candidate != bk:
+            wr = candidate
+        else:
+            # Попытаемся поставить на колонку чёрного короля
+            candidate = (wr_r, bk_c)
+            if candidate != wk and isInBoard(candidate) and candidate != bk:
+                wr = candidate
+    return wk, wr
 
-# Находит лучший ход белых (ладьи или короля)
-def find_best_white_move(bk_pos, wr_pos, wk_pos):
-    best_move = None
-    best_score = -float('inf')
-    
-    # Ходы ладьи
-    for new_wr_pos in get_rook_moves(wr_pos, bk_pos, wk_pos):
-        if not is_safe_for_rook(bk_pos, new_wr_pos):
-            continue
-        
-        # Оцениваем позицию
-        score = evaluate_position(bk_pos, new_wr_pos, wk_pos)
-        if score > best_score:
-            best_score = score
-            best_move = ('R', new_wr_pos)
-    
-    # Ходы белого короля
-    for new_wk_pos in get_king_moves(wk_pos):
-        # Не может встать на клетку с другой фигурой
-        if new_wk_pos == bk_pos or new_wk_pos == wr_pos:
-            continue
-        
-        # Не может встать рядом с черным королем
-        if not is_safe_for_king(bk_pos, new_wk_pos):
-            continue
-        
-        # Оцениваем позицию
-        score = evaluate_position(bk_pos, wr_pos, new_wk_pos)
-        if score > best_score:
-            best_score = score
-            best_move = ('K', new_wk_pos)
-    
-    return best_move
+# Ход черного короля
+def blackMoveAuto(wk, wr, bk):
+    available_moves = blackKingMoves(wk, wr, bk)
 
-
-# Оценивает позицию с точки зрения белых
-def evaluate_position(bk_pos, wr_pos, wk_pos):
-    score = 0
-    
-    bk_x, bk_y = bk_pos
-    wk_x, wk_y = wk_pos
-    
-    # 1. Шах - это хорошо
-    if is_in_check(bk_pos, wr_pos, wk_pos):
-        score += 100
-    
-    # 2. Прижимаем короля к краю
-    distance_to_edge = min(bk_x, FIELD_SIZE-1-bk_x, bk_y, FIELD_SIZE-1-bk_y)
-    score += (3 - distance_to_edge) * 10  # Чем ближе к краю, тем лучше
-    
-    # 3. Сближаем королей (но не слишком близко)
-    king_distance = max(abs(bk_x - wk_x), abs(bk_y - wk_y))
-    if king_distance > 2:  # Идеальное расстояние - 2 клетки
-        score -= abs(king_distance - 2) * 5
-    else:
-        score += (2 - king_distance) * 3
-    
-    # 4. Ладья должна контролировать короля
-    if is_attacked_by_rook(wr_pos, bk_pos):
-        score += 20
-        # Лучше, если ладья на безопасном расстоянии
-        wr_x, wr_y = wr_pos
-        rook_distance = max(abs(bk_x - wr_x), abs(bk_y - wr_y))
-        if rook_distance >= 2:
-            score += 10
-    
-    # 5. Ограничиваем ходы черного короля
-    black_moves = len(get_black_king_moves(bk_pos, wr_pos, wk_pos))
-    score += (8 - black_moves) * 5
-    
-    # 6. Избегаем пата
-    if is_stalemate(bk_pos, wr_pos, wk_pos):
-        score -= 1000
-    
-    return score
-
-
-# Находит лучший ход черного короля
-def find_best_black_move(bk_pos, wr_pos, wk_pos):
-    moves = get_black_king_moves(bk_pos, wr_pos, wk_pos)
-    
-    if not moves:
+    if not available_moves:
         return None
-    
-    # Черный король пытается убежать от края
-    best_move = None
-    best_score = -float('inf')
-    
-    for new_bk_pos in moves:
-        # Оцениваем с точки зрения черных
-        score = 0
-        new_x, new_y = new_bk_pos
-        
-        # Двигаемся к центру
-        distance_to_center = abs(new_x - FIELD_SIZE//2) + abs(new_y - FIELD_SIZE//2)
-        score += (FIELD_SIZE - distance_to_center) * 2
-        
-        # Избегаем шаха
-        if not is_in_check(new_bk_pos, wr_pos, wk_pos):
-            score += 50
-        
-        # Избегаем близости к белому королю
-        wk_x, wk_y = wk_pos
-        king_distance = max(abs(new_x - wk_x), abs(new_y - wk_y))
-        if king_distance > 2:
-            score += 10
-        
-        if score > best_score:
-            best_score = score
-            best_move = new_bk_pos
-    
-    return best_move
 
+    # Случайный выбор хода (раскомментировать при необходимости)
+    import random
+    selectedMove = random.choice(available_moves)
+    print(f'Ход черного короля: {selectedMove}')
 
+    return selectedMove
 
-# Основная стратегия оттеснения короля к краю
-def push_to_edge_strategy(bk_pos, wr_pos, wk_pos):
-    print("Начинаем стратегию оттеснения черного короля...")
-    
-    moves_count = 0
-    board = create_board()
-    
-    while moves_count < LIMIT_OF_STEPS:  # Ограничение на количество ходов
-        # Ход белых
-        white_move = find_best_white_move(bk_pos, wr_pos, wk_pos)
-        
-        if not white_move:
-            print("Белые не могут сделать ход!")
-            break
-        
-        piece_type, new_pos = white_move
-        if piece_type == 'R':
-            wr_pos = new_pos
-            print(f"Ход {moves_count+1}: Ладья → {new_pos}")
-        else:
-            wk_pos = new_pos
-            print(f"Ход {moves_count+1}: Белый король → {new_pos}")
-        
-        moves_count += 1
-        
-        # Проверяем мат
-        if is_mate(bk_pos, wr_pos, wk_pos):
-            board = place_pieces(board, bk_pos, wr_pos, wk_pos)
-            print_board(board)
-            print(f"МАТ! Всего ходов: {moves_count}")
-            return True
-        
-        # Проверяем пат
-        if is_stalemate(bk_pos, wr_pos, wk_pos):
-            print("Пат! Игра завершена.")
-            return False
-        
-        # Ход черных
-        black_move = find_best_black_move(bk_pos, wr_pos, wk_pos)
-        
-        if black_move:
-            bk_pos = black_move
-            print(f"Ход {moves_count+1}: Черный король → {black_move}")
-            moves_count += 1
-            
-            # Проверяем мат после хода черных
-            if is_mate(bk_pos, wr_pos, wk_pos):
-                board = place_pieces(board, bk_pos, wr_pos, wk_pos)
-                print_board(board)
-                print(f"МАТ! Всего ходов: {moves_count}")
-                return True
-        else:
-            # У черных нет ходов - проверяем мат или пат
-            if is_in_check(bk_pos, wr_pos, wk_pos):
-                print("МАТ!")
-                return True
-            else:
-                print("Пат!")
-                return False
-        
-        # Выводим доску
-        if moves_count % 5 == 0 or moves_count < 5:  # Выводим чаще в начале и каждые 5 ходов
-            board = place_pieces(board, bk_pos, wr_pos, wk_pos)
-            print_board(board)
-    
-    print(f"Достигнут лимит ходов ({moves_count})")
-    return False
-
-
-
-
-# Запуск программы
-def main():
-    print("=== ШАХМАТЫ-2 ===")
-    print(f"Размер доски: {FIELD_SIZE}x{FIELD_SIZE}")
+def printPositions(wk,wr,bk):
+    print("  " + " ".join(str(i) for i in range(8)))
+    board = [["·" if (i+j)%2 == 0 else "·" for j in range(8) ] for i in range(8)]
+    wrR, wrC = wr
+    wkR, wkC = wk
+    bkR, bkC = bk
+    board[wkR][wkC] = "♔"
+    board[wrR][wrC] = "♖"
+    board[bkR][bkC] = "♚"
+    for i in range(8):
+        print(str(i) + " " + " ".join(board[i]))
+    # print("\n".join(" ".join(row) for row in board))
     print()
-    
-    # Генерируем начальную позицию
-    print("Генерация начальной позиции...")
-    bk_pos, wr_pos, wk_pos = generate_initial_position()
-    
-    print(f"Начальная позиция:")
-    print(f"Черный король: {bk_pos}")
-    print(f"Белая ладья: {wr_pos}")
-    print(f"Белый король: {wk_pos}")
-    print()
-    
-    # Выводим начальную доску
-    board = create_board()
-    board = place_pieces(board, bk_pos, wr_pos, wk_pos)
-    print("Начальная позиция:")
-    print_board(board)
-    
-    # Проверяем начальную позицию
-    if not is_valid_position(bk_pos, wr_pos, wk_pos):
-        print("Ошибка: некорректная начальная позиция!")
-        return
-    
-    # Запускаем стратегию
-    success = push_to_edge_strategy(bk_pos, wr_pos, wk_pos)
-    
-    if success:
-        print("Мат успешно поставлен!")
-    else:
-        print("Не удалось поставить мат в пределах лимита ходов.")
 
+wk = (4,4) # белый король
+wr = (4,3) # белая ладья
+bk = (1,1) # черный король
 
-main()
+MAX_MOVES = 100
+
+for turn in range(MAX_MOVES):
+    print(f"Ход {turn+1}")
+    printPositions(wk,wr,bk)
+    if isCheckmate(wk,wr,bk):
+        print("Мат! Белые выиграли.")
+        break
+    wk, wr = whiteMove(wk,wr,bk)
+    if isCheckmate(wk,wr,bk):
+        print("Мат! Белые выиграли.")
+        printPositions(wk,wr,bk)
+        break
+    bk = blackMoveAuto(wk,wr,bk)
+else:
+    print(f"Не удалось поставить мат за {MAX_MOVES} ходов.")
