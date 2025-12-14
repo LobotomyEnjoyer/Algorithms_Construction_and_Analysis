@@ -173,20 +173,20 @@ black_king = (1,1) # черный король
 MAX_MOVES = 100
 
 for turn in range(MAX_MOVES):
-    print(f"Ход {turn+1}")
+    print(f"Ход под номером {turn+1}")
     display_positions(white_king,white_rook,black_king)
 
     if is_checkmate(white_king,white_rook,black_king):
-        print("Мат! Белые выиграли.")
+        print("МАТ! Черный король побеждён. \n Игра окончена.")
         break
 
     white_king, white_rook = whiteMove(white_king,white_rook,black_king)
 
     if is_checkmate(white_king,white_rook,black_king):
-        print("Мат! Белые выиграли.")
+        print("МАТ! Черный король побеждён. \n Игра окончена.")
         display_positions(white_king,white_rook,black_king)
         break
 
     black_king = black_move(white_king,white_rook,black_king)
 else:
-    print(f"Не удалось поставить мат за {MAX_MOVES} ходов.")
+    print(f"Не удалось поставить мат черному королю.\nПревышено количество ходов.")
