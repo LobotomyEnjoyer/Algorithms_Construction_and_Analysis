@@ -2,7 +2,6 @@
 # ЗАДАЧА: Дан черный король, белый король и белая ладья. Необходимо поставить мат черному королю
 
 # АЛГОРИТМ
-# Строится шахматная доска 8х8
 # Ставятся фигуры
 # Запускается цикл по ходам. Если количество ходов закончится, программа завершится.
 # Программа сразу проверяет, не является ли данная расстановка матом
@@ -143,7 +142,7 @@ def black_move(wk, wr, bk) -> list:
     # Случайный выбор хода (раскомментировать при необходимости)
     import random
     selectedMove = random.choice(available_moves)
-    print(f'Ход черного короля: {selectedMove}')
+    # print(f'Ход черного короля: {selectedMove}')
 
     return selectedMove
 
@@ -166,8 +165,8 @@ def display_positions(wk,wr,bk) -> None:
 
 # ОСНОВНАЯ ЧАСТЬ ПРОГРАММЫ
 
-white_king = (4,4) # белый король
-white_rook = (4,3) # белая ладья
+white_king = (3,4) # белый король
+white_rook = (3,3) # белая ладья
 black_king = (1,1) # черный король
 
 MAX_MOVES = 100
@@ -177,16 +176,19 @@ for turn in range(MAX_MOVES):
     display_positions(white_king,white_rook,black_king)
 
     if is_checkmate(white_king,white_rook,black_king):
-        print("МАТ! Черный король побеждён. \n Игра окончена.")
+        print("МАТ! Черный король побеждён.\nИгра окончена.")
         break
 
     white_king, white_rook = whiteMove(white_king,white_rook,black_king)
 
     if is_checkmate(white_king,white_rook,black_king):
-        print("МАТ! Черный король побеждён. \n Игра окончена.")
+        print("МАТ! Черный король побеждён.\nИгра окончена.")
         display_positions(white_king,white_rook,black_king)
         break
 
     black_king = black_move(white_king,white_rook,black_king)
 else:
     print(f"Не удалось поставить мат черному королю.\nПревышено количество ходов.")
+
+# TODO:
+# ВВЕСТИ ПООЧЕРЕДНОСТЬ БЕЛЫХ ФИГУР!!! БЕЛЫЕ ФИГУРЫ ХОДЯТ ОДНОВРЕМЕННО, ТАК НЕЛЬЗЯ!
