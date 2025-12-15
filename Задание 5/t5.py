@@ -189,6 +189,3 @@ for turn in range(MAX_MOVES):
     black_king = black_move(white_king,white_rook,black_king)
 else:
     print(f"Не удалось поставить мат черному королю.\nПревышено количество ходов.")
-
-# TODO:
-# ВВЕСТИ ПООЧЕРЕДНОСТЬ БЕЛЫХ ФИГУР!!! БЕЛЫЕ ФИГУРЫ ХОДЯТ ОДНОВРЕМЕННО, ТАК НЕЛЬЗЯ!
