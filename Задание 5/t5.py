@@ -172,7 +172,7 @@ black_king = (1,1) # черный король
 MAX_MOVES = 100
 
 for turn in range(MAX_MOVES):
-    print(f"Ход под номером {turn+1}")
+    print(f"Итерация под номером {turn+1}")
     display_positions(white_king,white_rook,black_king)
 
     if is_checkmate(white_king,white_rook,black_king):
